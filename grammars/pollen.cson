@@ -1,0 +1,65 @@
+# http://manual.macromates.com/en/language_grammars
+
+name: "Pollen"
+scopeName: "source.pollen"
+fileTypes: [
+  "pm",
+  "pp",
+  "ptree",
+  "p"
+]
+firstLineMatch: "^#lang pollen$"
+patterns: [
+  {
+    match: "◊\\s+"
+    name: "invalid.illegal"
+  }
+  {
+    begin: "◊;\\{"
+    end: "\\}"
+    name: "comment.multiline.pollen"
+    patterns: [
+      { include: "#braces" }
+    ]
+  }
+  {
+    begin: "◊;\\|\\{"
+    end: "\\}\\|"
+    name: "comment.multiline.pollen"
+    patterns: [
+      { include: "#braces" }
+    ]
+  }
+  {
+    match: "(◊;)[^\\{].*$"
+    captures:
+      "1":
+        name: "punctuation.definition.comment.pollen"
+    name: "comment.line.semicolon.pollen"
+  }
+  {
+    match: "(◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+)"
+    captures: {
+      1: { name: 'entity.name.function.pollen' }
+    }
+  }
+  {
+    begin: "◊"
+    end: "\\s|\\n"
+    patterns: [
+      { include: "source.racket" }
+    ]
+  }
+]
+repository:
+  braces:
+    begin: "\\{"
+    end: "\\}"
+    patterns: [
+      {
+        include: "#braces"
+      }
+      {
+        include: "$self"
+      }
+    ]
