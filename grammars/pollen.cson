@@ -38,9 +38,24 @@ patterns: [
     name: "comment.line.semicolon.pollen"
   }
   {
-    match: "(◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+)"
-    captures: {
+    begin: "(◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+)(\\{)"
+    beginCaptures: {
       1: { name: 'entity.name.function.pollen' }
+      2: { name: 'punctuation.block.begin' }
+    }
+    end: "\\}"
+    endCaptures: {
+      0: { name: 'punctuation.block.end' }
+    }
+    name: 'meta.block.pollen'
+    patterns: [
+      { include: "#braces" }
+    ]
+  }
+  {
+    match: "◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+"
+    captures: {
+      0: { name: 'entity.name.function.pollen' }
     }
   }
   {
