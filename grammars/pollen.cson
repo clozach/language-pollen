@@ -8,60 +8,42 @@ fileTypes: [
   "ptree",
   "p"
 ]
-firstLineMatch: "^#lang pollen$"
+firstLineMatch: "^#lang\\s+pollen$"
 patterns: [
+  # match single-line comment before multiline
   {
-    match: "◊\\s+"
-    name: "invalid.illegal"
-  }
-  {
-    begin: "◊;\\{"
-    end: "\\}"
-    name: "comment.multiline.pollen"
-    patterns: [
-      { include: "#braces" }
-    ]
-  }
-  {
-    begin: "◊;\\|\\{"
-    end: "\\}\\|"
-    name: "comment.multiline.pollen"
-    patterns: [
-      { include: "#braces" }
-    ]
-  }
-  {
-    match: "(◊;)[^\\{].*$"
-    captures:
-      "1":
-        name: "punctuation.definition.comment.pollen"
+    match: "◊;[^\\|\\{].*$"
     name: "comment.line.semicolon.pollen"
   }
   {
-    begin: "(◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+)(\\{)"
-    beginCaptures: {
-      1: { name: 'entity.name.function.pollen' }
-      2: { name: 'punctuation.block.begin' }
-    }
-    end: "\\}"
-    endCaptures: {
-      0: { name: 'punctuation.block.end' }
-    }
-    name: 'meta.block.pollen'
+    begin: "◊;"
+    end: "\\s"
     patterns: [
+      { include: "#special_brace" }
       { include: "#braces" }
+    ]
+    name: "comment.multiline.pollen"
+  }
+  {
+    begin: "◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+"
+    end: "\\s"
+    beginCaptures: {
+      0: { name: "entity.name.tag.pollen" }
+    }
+    patterns: [
+      { include: "#racket_args" }
+      { include: "#braces" }
+      { include: "#special_brace" }
     ]
   }
   {
-    match: "◊[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+"
-    captures: {
-      0: { name: 'entity.name.function.pollen' }
-    }
-  }
-  {
-    begin: "◊"
-    end: "\\s|\\n"
+    begin: "◊\\("
+    end: "\\)"
     patterns: [
+      {
+        match: "(define-meta)|(when/splice)|(get-doc)|(get-metas)|(select\\*)|(select-from-doc)|(select-from-metas)|(select)"
+        name: "keyword.other.pollen"
+      }
       { include: "source.racket" }
     ]
   }
@@ -69,12 +51,36 @@ patterns: [
 repository:
   braces:
     begin: "\\{"
+    beginCaptures: {
+      0: { name: "punctuation.block.begin.pollen" }
+    }
     end: "\\}"
+    endCaptures: {
+      0: { name: "punctuation.block.end.pollen" }
+    }
     patterns: [
-      {
-        include: "#braces"
-      }
-      {
-        include: "$self"
-      }
+      { include: "#braces" }
+      { include: "$self" }
+    ]
+  # no command char will be interpreted inside special_brace
+  # braces don't need to be balanced inside special_brace
+  # special_brace must be kept balanced
+  special_brace:
+    begin: "\\|\\{"
+    end: "\\}\\|"
+    beginCaptures: {
+      0: { name: 'punctuation.block.special_begin.pollen' }
+    }
+    endCaptures: {
+      0: { name: 'punctuation.block.special_end.pollen' }
+    }
+    patterns: [
+      { include: "#special_brace" }
+      # don't include "$self" here because unbalanced parens are allowed.
+    ]
+  racket_args:
+    begin: "\\["
+    end: "\\]"
+    patterns: [
+      { include: "source.racket" }
     ]
