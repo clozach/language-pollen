@@ -1,4 +1,4 @@
 '.source.pollen':
   'Command Char':
     'prefix': '@'
-    'body': '◊$1{}'
+    'body': '∞$1{}'
