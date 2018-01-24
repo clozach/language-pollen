@@ -12,11 +12,11 @@ firstLineMatch: "^#lang\\s+pollen$"
 patterns: [
   # match single-line comment before multiline
   {
-    match: "∞;[^\\|\\{].*$"
+    match: "§;[^\\|\\{].*$"
     name: "comment.line.semicolon.pollen"
   }
   {
-    begin: "∞;"
+    begin: "§;"
     end: "\\s"
     patterns: [
       { include: "#special_brace" }
@@ -25,7 +25,7 @@ patterns: [
     name: "comment.multiline.pollen"
   }
   {
-    begin: "∞[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+"
+    begin: "§[^\\s\\{\\}\\(\\)\\[\\]#\\|,\"]+"
     end: "\\s"
     beginCaptures: {
       0: { name: "entity.name.tag.pollen" }
@@ -37,7 +37,7 @@ patterns: [
     ]
   }
   {
-    begin: "∞\\("
+    begin: "§\\("
     end: "\\)"
     patterns: [
       {
