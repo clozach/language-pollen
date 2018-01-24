@@ -1,11 +1,19 @@
 # Pollen language package
 
-This package adds syntax highlight to Pollen files.
+This package adds syntax highlighting to [Pollen](https://docs.racket-lang.org/pollen/) files.
 
 # Installation
 
-Since Pollen source can also contain Racket code, for better highlighting, please also consider to install [language-racket](https://github.com/vito/language-racket) package.
+- Search for _Pollen_ and _Racket_ (optional<a name="footnote">1</a>) in the Atom package manager
+\~ or ~
+- Run `apm install language-racket language-pollen`
 
-To install, run
+---
 
-`apm install language-rakcet language-pollen`
+<sup>[1](#footnote)</sup>`language-racket` is not an explicit dependency of this project. That said, Pollen source files can contain [_Racket_](https://racket-lang.org/) code, so you'll probably want to install both:
+
+_Pollen only_
+![pollen-only-highlighting](images/2018/01/pollen-only-highlighting.png)
+
+_Pollen with Racket_
+![with-racket-highlighting](images/2018/01/with-racket-highlighting.png)
